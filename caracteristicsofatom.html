@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Juego del Átomo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #282c34;
+            color: #61dafb;
+            text-align: center;
+        }
+        #atom {
+            margin-top: 20px;
+        }
+        #guess {
+            margin-top: 20px;
+        }
+        input, button {
+            background-color: #282c34;
+            border: 1px solid #61dafb;
+            color: #61dafb;
+        }
+    </style>
+</head>
+<body>
+    <h1>Juego del Átomo</h1>
+    <div id="atom"></div>
+    <div id="guess">
+        <label for="elementGuess" id="elementLabel">Adivina el elemento: </label>
+        <input type="text" id="elementGuess">
+        <button onclick="checkGuess()">Adivinar</button>
+    </div>
+    <script>
+        var elementData = {
+        'Hidrógeno': {symbol: 'H', protons: 1, neutrons: 0, electrons: 1},
+        'Helio': {symbol: 'He', protons: 2, neutrons: 2, electrons: 2},
+        'Litio': {symbol: 'Li', protons: 3, neutrons: 4, electrons: 3},
+        'Berilio': {symbol: 'Be', protons: 4, neutrons: 5, electrons: 4},
+        'Boro': {symbol: 'B', protons: 5, neutrons: 6, electrons: 5},
+        'Carbono': {symbol: 'C', protons: 6, neutrons: 6, electrons: 6},
+        'Nitrógeno': {symbol: 'N', protons: 7, neutrons: 7, electrons: 7},
+        'Oxígeno': {symbol: 'O', protons: 8, neutrons: 8, electrons: 8},
+        'Flúor': {symbol: 'F', protons: 9, neutrons: 10, electrons: 9},
+        'Neón': {symbol: 'Ne', protons: 10, neutrons: 10, electrons: 10},
+        'Sodio': {symbol: 'Na', protons: 11, neutrons: 12, electrons: 11},
+        'Magnesio': {symbol: 'Mg', protons: 12, neutrons: 12, electrons: 12},
+        'Aluminio': {symbol: 'Al', protons: 13, neutrons: 14, electrons: 13},
+        'Silicio': {symbol: 'Si', protons: 14, neutrons: 14, electrons: 14},
+        'Fósforo': {symbol: 'P', protons: 15, neutrons: 16, electrons: 15},
+        'Azufre': {symbol: 'S', protons: 16, neutrons: 16, electrons: 16},
+        'Cloro': {symbol: 'Cl', protons: 17, neutrons: 18, electrons: 17},
+        'Argón': {symbol: 'Ar', protons: 18, neutrons: 22, electrons: 18},
+        'Potasio': {symbol: 'K', protons: 19, neutrons: 20, electrons: 19},
+        'Calcio': {symbol: 'Ca', protons: 20, neutrons: 20, electrons: 20},
+        'Escandio': {symbol: 'Sc', protons: 21, neutrons: 24, electrons: 21},
+        'Titanio': {symbol: 'Ti', protons: 22, neutrons: 26, electrons: 22},
+        'Vanadio': {symbol: 'V', protons: 23, neutrons: 28, electrons: 23},
+        'Cromo': {symbol: 'Cr', protons: 24, neutrons: 28, electrons: 24},
+        'Manganeso': {symbol: 'Mn', protons: 25, neutrons: 30, electrons: 25},
+        'Hierro': {symbol: 'Fe', protons: 26, neutrons: 30, electrons: 26},
+        'Cobalto': {symbol: 'Co', protons: 27, neutrons: 32, electrons: 27},
+        'Níquel': {symbol: 'Ni', protons: 28, neutrons: 31, electrons: 28},
+        'Cobre': {symbol: 'Cu', protons: 29, neutrons: 35, electrons: 29},
+        'Zinc': {symbol: 'Zn', protons: 30, neutrons: 35, electrons: 30},
+        'Galio': {symbol: 'Ga', protons: 31, neutrons: 39, electrons: 31},
+        'Germanio': {symbol: 'Ge', protons: 32, neutrons: 41, electrons: 32},
+        'Arsénico': {symbol: 'As', protons: 33, neutrons: 42, electrons: 33},
+        'Selenio': {symbol: 'Se', protons: 34, neutrons: 45, electrons: 34},
+        'Bromo': {symbol: 'Br', protons: 35, neutrons: 45, electrons: 35},
+        'Kriptón': {symbol: 'Kr', protons: 36, neutrons: 48, electrons: 36},
+        'Rubidio': {symbol: 'Rb', protons: 37, neutrons: 48, electrons: 37},
+        'Estroncio': {symbol: 'Sr', protons: 38, neutrons: 50, electrons: 38},
+        'Itrio': {symbol: 'Y', protons: 39, neutrons: 50, electrons: 39},
+        'Circonio': {symbol: 'Zr', protons: 40, neutrons: 51, electrons: 40},
+        'Niobio': {symbol: 'Nb', protons: 41, neutrons: 52, electrons: 41},
+        'Molibdeno': {symbol: 'Mo', protons: 42, neutrons: 54, electrons: 42},
+        'Tecnecio': {symbol: 'Tc', protons: 43, neutrons: 55, electrons: 43},
+        'Rutenio': {symbol: 'Ru', protons: 44, neutrons: 57, electrons: 44},
+        'Rodio': {symbol: 'Rh', protons: 45, neutrons: 58, electrons: 45},
+        'Paladio': {symbol: 'Pd', protons: 46, neutrons: 60, electrons: 46},
+        'Plata': {symbol: 'Ag', protons: 47, neutrons: 61, electrons: 47},
+        'Cadmio': {symbol: 'Cd', protons: 48, neutrons: 64, electrons: 48},
+        'Indio': {symbol: 'In', protons: 49, neutrons: 66, electrons: 49}
+        };
+        var currentElement = getRandomElement(); 
+
+        function getRandomElement() {
+            var keys = Object.keys(elementData);
+            return keys[keys.length * Math.random() << 0];
+        }
+
+        function displayAtom() {
+            var atomDiv = document.getElementById('atom');
+            var data = elementData[currentElement];
+            atomDiv.innerHTML = 'Protones: ' + data.protons + '<br>Neutrones: ' + data.neutrons + '<br>Electrones: ' + data.electrons;
+        }
+
+        function checkGuess() {
+            var guessInput = document.getElementById('elementGuess');
+            var guessLabel = document.getElementById('elementLabel');
+            var guess = guessInput.value;
+            if (guess === currentElement || guess === elementData[currentElement].symbol) {
+                guessInput.style.borderColor = 'green';
+                guessLabel.style.color = 'green';
+                currentElement = getRandomElement();
+                displayAtom();
+            } else {
+                guessInput.style.borderColor = 'red';
+                guessLabel.style.color = 'red';
+            }
+        }
+
+        displayAtom();
+    </script>
+</body>
+</html>
