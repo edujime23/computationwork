@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sopa de letras</title>
+	<style>
+        body {
+            background-color: #1a1a1a;
+            color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            margin-bottom: 30px;
+        }
+        table {
+            border-collapse: collapse;
+            margin: auto;
+        }
+        td {
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            border: 1px solid #f2f2f2;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #1a1a1a;
+            color: #f2f2f2;
+        }
+        .hidden {
+            background-color: #f2f2f2;
+            color: #1a1a1a;
+        }
+        .green {
+            color: green;
+        }
+        p {
+            font-size: 20px;
+            margin: 5px;
+            padding: 5px;
+            background-color: #1a1a1a;
+            display: inline-block;
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+            margin-bottom: 3%;
+        }
+    </style>
+</head>
+<body>
+	<h1>Sopa de letras</h1>
+	<script>
+		var letras = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+        var palabras = ["boro", "carbono", "nitrogeno", "oxigeno", "fluor", "helio", "bromo", "silisio", "estaño", "hierro", "cobalto", "coromo", "titanio", "magnesio", "litio", "cesio", "calcio", "sodio", "hidrogeno"];
+        var palabras_ocultas = [];
+        var letras_ocultas = [];
+        var tabla = document.createElement("table");
+        var num_palabras = 7;
+        var palabra_actual = "";
+        var fila = 0;
+        var columna = 0;
+        var letra = "";
+
+        // Crear tabla y llenar celdas con letras aleatorias
+        for (var i = 0; i < 12; i++) {
+            var fila_actual = document.createElement("tr");
+            for (var j = 0; j < 12; j++) {
+                var celda_actual = document.createElement("td");
+                letra = letras[Math.floor(Math.random() * letras.length)];
+                celda_actual.innerHTML = letra;
+                fila_actual.appendChild(celda_actual);
+            }
+            tabla.appendChild(fila_actual);
+        }
+        document.body.appendChild(tabla);
+
+        // Seleccionar palabras aleatorias
+        for (var i = 0; i < num_palabras; i++) {
+            palabra_actual = palabras[Math.floor(Math.random() * palabras.length)];
+            palabras_ocultas.push(palabra_actual);
+            palabras.splice(palabras.indexOf(palabra_actual), 1);
+        }
+
+        // Ocultar letras de las palabras seleccionadas
+        for (const element of palabras_ocultas) {
+            fila = Math.floor(Math.random() * (tabla.rows.length - 1));
+            columna = Math.floor(Math.random() * (tabla.rows[0].cells.length - element.length));
+            for (var j = 0; j < element.length; j++) {
+                tabla.rows[fila].cells[columna + j].innerHTML = element.charAt(j);
+                letras_ocultas.push([fila, columna + j]);
+            }
+        }
+
+        // Agregar eventos a las celdas
+        for (const element of tabla.rows) {
+            for (var j = 0; j < element.cells.length; j++) {
+                element.cells[j].addEventListener("click", function() {
+                    if (this.className == "hidden") {
+                        this.className = "";
+                    } else {
+                        this.className = "hidden";
+                    }
+                    var fila = this.parentNode.rowIndex;
+                    var columna = this.cellIndex;
+                    for (const palabra of palabras_ocultas) {
+                        var palabra_completa = true;
+                        for (var k = 0; k < palabra.length; k++) {
+                            var letra_oculta = letras_ocultas.find(l => l[0] == fila && l[1] == columna + k);
+                            if (!letra_oculta || tabla.rows[letra_oculta[0]].cells[letra_oculta[1]].className == "") {
+                                palabra_completa = false;
+                                break;
+                            }
+                        }
+                        if (palabra_completa) {
+                            var palabraP = document.getElementById(palabra);
+                            palabraP.className = "green";
+                        }
+                    }
+                });
+            }
+        }
+
+        // Mostrar palabras escondidas
+        for (const element of palabras_ocultas) {
+            var palabra = element;
+            for (var j = 0; j < letras_ocultas.length; j++) {
+                if (letras_ocultas[j][0] == fila && letras_ocultas[j][1] == columna) {
+                    palabra = palabra.replace(element.charAt(j), "<span style='color:green'>" + element.charAt(j) + "</span>");
+                }
+            }
+            let palabraP = document.createElement("p");
+            palabraP.id = element;
+            palabraP.innerHTML = palabra;
+            document.body.insertBefore(palabraP, tabla);
+        }
+	</script>
+</body>
+</html>
