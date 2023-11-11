@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+          background-color: #1a1a1a;
+          color: #fff;
+        }
+    
+        .quiz-container {
+          max-width: 600px;
+          margin: 0 auto;
+          text-align: left;
+        }
+    
+        .question-container {
+          margin-bottom: 20px;
+        }
+    
+        .question-container p {
+          font-weight: bold;
+        }
+    
+        input[type="radio"] + label {
+          color: #fff;
+          display: inline-block;
+          margin-right: 10px;
+          padding: 5px;
+          border-radius: 5px;
+          border: 1px solid #fff;
+          cursor: pointer;
+        }
+    
+        input[type="radio"]:checked + label {
+          background-color: #4CAF50;
+          border-color: #4CAF50;
+        }
+    
+        input[type="radio"]:checked + label.correct {
+          color: #4CAF50;
+        }
+    
+        input[type="radio"]:checked + label.incorrect {
+          color: red;
+        }
+    
+        button {
+          margin-top: 20px;
+          background-color: #4CAF50;
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+    
+        button:hover {
+          background-color: #3e8e41;
+        }
+    
+        button:active {
+          background-color: #3e8e41;
+          transform: translateY(2px);
+        }
+    
+        button:focus {
+          outline: none;
+        }
+    
+        .quiz-container h2 {
+          margin-bottom: 20px;
+        }
+      </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <h2>Quiz de la historia del modelo del átomo</h2>
+    <div class="question-container">
+      <p>1. ¿Qué tipo de preguntas surgieron en torno a la estructura de la materia en la antigüedad?</p>
+      <input type="radio" name="question1" value="B" onclick="checkAnswer(this)"> A) ¿Cómo se mueve la materia?<br>
+      <input type="radio" name="question1" value="A" onclick="checkAnswer(this)"> B) ¿De qué está hecho esto?<br>
+      <input type="radio" name="question1" value="C" onclick="checkAnswer(this)"> C) ¿Cómo se transforma la materia?<br>
+      <input type="radio" name="question1" value="D" onclick="checkAnswer(this)"> D) ¿Cómo se relacionan los elementos?<br>
+    </div>
+    <div class="question-container">
+      <p>2. ¿Quiénes fueron los primeros pensadores que intentaron explicar el origen y la composición de la materia?</p>
+      <input type="radio" name="question2" value="A" onclick="checkAnswer(this)"> A) Tales, Anaximenes, Heráclito y Empedocles<br>
+      <input type="radio" name="question2" value="B" onclick="checkAnswer(this)"> B) Leucipo y Demócrito<br>
+      <input type="radio" name="question2" value="C" onclick="checkAnswer(this)"> C) Niels Bohr y Erwin Schrödinger<br>
+      <input type="radio" name="question2" value="D" onclick="checkAnswer(this)"> D) Aristóteles y Platón<br>
+    </div>
+    <div class="question-container">
+      <p>3. ¿Qué teoría se constituyó a partir de la idea de que la tierra, el agua, el aire y el fuego se combinaban para conformar la materia?</p>
+      <input type="radio" name="question3" value="C" onclick="checkAnswer(this)"> A) La teoría de la relatividad<br>
+      <input type="radio" name="question3" value="B" onclick="checkAnswer(this)"> B) La teoría de la evolución<br>
+      <input type="radio" name="question3" value="A" onclick="checkAnswer(this)"> C) La teoría de los cuatro elementos<br>
+      <input type="radio" name="question3" value="D" onclick="checkAnswer(this)"> D) La teoría de la gravedad<br>
+    </div>
+    <div class="question-container">
+      <p>4. ¿Quién elaboró el modelo atómico de Bohr?</p>
+      <input type="radio" name="question4" value="C" onclick="checkAnswer(this)"> A) Leucipo<br>
+      <input type="radio" name="question4" value="B" onclick="checkAnswer(this)"> B) Demócrito<br>
+      <input type="radio" name="question4" value="A" onclick="checkAnswer(this)"> C) Niels Bohr<br>
+      <input type="radio" name="question4" value="D" onclick="checkAnswer(this)"> D) Erwin Schrödinger<br>
+    </div>
+    <div class="question-container">
+      <p>5. ¿Cómo se sabe actualmente que los electrones no giran en órbitas definidas?</p>
+      <input type="radio" name="question5" value="C" onclick="checkAnswer(this)"> A) Por la teoría de la relatividad<br>
+      <input type="radio" name="question5" value="B" onclick="checkAnswer(this)"> B) Por la teoría de la evolución<br>
+      <input type="radio" name="question5" value="A" onclick="checkAnswer(this)"> C) Por la ecuación de onda de Erwin Schrödinger<br>
+      <input type="radio" name="question5" value="D" onclick="checkAnswer(this)"> D) Por la teoría de los cuatro elementos<br>
+    </div>
+    <div class="question-container">
+      <p>6. ¿Quién consiguió representar el comportamiento del electrón mediante una ecuación de onda?</p>
+      <input type="radio" name="question6" value="D" onclick="checkAnswer(this)"> A) Leucipo<br>
+      <input type="radio" name="question6" value="B" onclick="checkAnswer(this)"> B) Demócrito<br>
+      <input type="radio" name="question6" value="C" onclick="checkAnswer(this)"> C) Niels Bohr<br>
+      <input type="radio" name="question6" value="D" onclick="checkAnswer(this)"> D) Erwin Schrödinger<br>
+    </div>
+    <button onclick="resetQuiz()">Reset</button>
+  </div>
+  <script>
+    function checkAnswer(element) {
+      var correctAnswers = ["B", "A", "C", "C", "A", "D"];
+      var userAnswer = element.value;
+      var questionIndex = element.name.slice(-1) - 1;
+      var questionContainer = element.parentNode;
+      if (userAnswer === correctAnswers[questionIndex]) {
+        questionContainer.classList.remove("incorrect");
+        questionContainer.classList.add("correct");
+      } else {
+        questionContainer.classList.remove("correct");
+        questionContainer.classList.add("incorrect");
+      }
+    }
+
+    function resetQuiz() {
+      var questions = document.getElementsByTagName("input");
+      for (const element of questions) {
+        element.checked = false;
+        element.parentNode.classList.remove("correct");
+        element.parentNode.classList.remove("incorrect");
+      }
+    }
+  </script>
+</body>
+</html>
