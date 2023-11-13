@@ -30,6 +30,7 @@
         <input type="text" id="elementGuess" onchange="checkGuess()">
     </div>
     <script>
+        const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
         var elementData = {
             'Hidrógeno': {symbol: 'H', protons: 1, neutrons: 0, electrons: 1},
             'Helio': {symbol: 'He', protons: 2, neutrons: 2, electrons: 2},
@@ -164,7 +165,7 @@
             atomDiv.innerHTML = 'Protones: ' + data.protons + '<br>Neutrones: ' + data.neutrons + '<br>Electrones: ' + data.electrons;
         }
 
-        function checkGuess() {
+        async function checkGuess() {
             var guessInput = document.getElementById('elementGuess');
             var guessLabel = document.getElementById('elementLabel');
             var guess = guessInput.value.toLowerCase();
@@ -172,10 +173,11 @@
                 guessInput.style.borderColor = 'green';
                 guessLabel.style.color = 'green';
                 guessInput.setAttribute("disabled", "")
-                setTimeout(() => {console.log("Nice")}, 5000);
+                await wait(5000)
                 currentElement = getRandomElement();
                 displayAtom();
                 guessInput.removeAttribute("disabled", "")
+                guessInput.focus()
             } else {
                 guessInput.style.borderColor = 'red';
                 guessLabel.style.color = 'red';
