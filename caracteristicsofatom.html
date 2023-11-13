@@ -27,7 +27,7 @@
     <div id="atom"></div>
     <div id="guess">
         <label for="elementGuess" id="elementLabel">Adivina el elemento: </label>
-        <input type="text" id="elementGuess">
+        <input type="text" id="elementGuess" onsubmit="checkGuess()">
         <button onclick="checkGuess()">Adivinar</button>
     </div>
     <script>
@@ -98,8 +98,8 @@
         function checkGuess() {
             var guessInput = document.getElementById('elementGuess');
             var guessLabel = document.getElementById('elementLabel');
-            var guess = guessInput.value;
-            if (guess === currentElement || guess === elementData[currentElement].symbol) {
+            var guess = guessInput.value.toLowerCase();
+            if (guess === currentElement.toLowerCase() || guess === elementData[currentElement].symbol.toLowerCase()) {
                 guessInput.style.borderColor = 'green';
                 guessLabel.style.color = 'green';
                 currentElement = getRandomElement();
