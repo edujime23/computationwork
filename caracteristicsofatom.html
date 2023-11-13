@@ -5,8 +5,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #282c34;
-            color: #61dafb;
+            background-color: #161616;
+            color: #ffffff;
             text-align: center;
         }
         #atom {
@@ -170,17 +170,17 @@
             var guessLabel = document.getElementById('elementLabel');
             var guess = guessInput.value.toLowerCase();
             if (guess === currentElement.toLowerCase() || guess === elementData[currentElement].symbol.toLowerCase()) {
-                guessInput.style.borderColor = 'green';
-                guessLabel.style.color = 'green';
+                document.body.style.color = 'green';
                 guessInput.setAttribute("disabled", "")
-                await wait(5000)
+                await wait(3000)
                 currentElement = getRandomElement();
                 displayAtom();
                 guessInput.removeAttribute("disabled", "")
                 guessInput.focus()
             } else {
-                guessInput.style.borderColor = 'red';
-                guessLabel.style.color = 'red';
+                document.body.style.color = 'red';
+                await wait(250)
+                document.body.style.color = 'white';
             }
         }
 
